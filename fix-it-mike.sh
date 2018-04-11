@@ -149,7 +149,8 @@ BANNER
 echo -e "${NORMAL} "
 
 date=`date +%Y-%m-%d-%H_%M_%S`
-name="p2p-$os-$date"
+hostname=`hostname -i`
+name="p2p-$os-$hostname-$date"
 output="/tmp/$name"
 unit_name=""
 p2p_path="$1"
