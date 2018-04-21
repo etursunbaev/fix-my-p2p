@@ -149,13 +149,12 @@ BANNER
 echo -e "${NORMAL} "
 
 date=`date +%Y-%m-%d-%H_%M_%S`
-hostname=`hostname -i`
-name="p2p-$os-$hostname-$date"
+name="p2p-$os-$date"
 output="/tmp/$name"
 unit_name=""
 p2p_path="$1"
 
-$(sudo ls /) >/dev/null 2>&1
+$(ls /) >/dev/null 2>&1
 
 check_p2p_path
 find_p2p_command
@@ -173,7 +172,7 @@ fi
 if [ "$unit_name" != "" ]; then
     if [ "$os" == "Linux" ]; then
         echo -ne "Executing ${BOLD}journalctl${NORMAL} and collecting logs"
-        sudo journalctl -u $unit_name > $output/p2p.log 2>&1
+        journalctl -u $unit_name > $output/p2p.log 2>&1
     else
         echo -ne "Executing ${BOLD}cat /var/log/p2p.log${BOLD} to collect logs"
         cat /var/log/p2p.log > $output/p2p.log 2>&1
@@ -229,9 +228,10 @@ else
     show_ok
 fi
 
-echo -ne "Packaging into /tmp/$name.tar.gz"
+echo -ne "Packaging logs"
 cd /tmp
-tar zcvf $name.tar.gz $output/* > /dev/null 2>&1
+echo $arch
+tar zcvf peer-$arch-$name.tar.gz $output/* > /dev/null 2>&1
 if [ $? != 0 ]; then
     show_fail
 else
@@ -240,15 +240,8 @@ fi
 
 rm -rf $output
 
-echo -e "\n${YELLOW}${BOLD}Finished!${NORMAL}\n"
-echo "We have created a file here: ${GREEN}${BOLD}/tmp/$name${NORMAL}.tar.gz"
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    echo "You need to move it to your computer and send it to mike"
-    echo "For example, you can try to execute \`scp\` command on your host:"
-    echo -e "\t${BOLD}scp <USER>@<HOST>:/tmp/$name.tar.gz ~${NORMAL}"
-    echo "Replace <USER> with username on this computer"
-    echo "Replace <HOST> with IP address of this computer"
-    echo "If you did everything right you will see a file named"
-    echo "${YELLOW}$name.tar.gz${NORMAL} in your home directory!"
-fi
-echo -e "\n${BOLD}~ Good Bye ~${NORMAL}\n"
+echo "----------------------***********************----------------------------------"
+echo " " 
+echo -e "\n${BOLD}~ UPLOADING peer-$arch-$name.tar.gz to SLACK ~${NORMAL}\n"
+
+curl -F file="@peer-$arch-$name.tar.gz" -F channels="#p2p" -F token="xoxp-219986334513-351908218199-351753507510-43659a63fb3b64ce9626b9dde11db283" https://slack.com/api/files.upload
