@@ -172,7 +172,7 @@ fi
 if [ "$unit_name" != "" ]; then
     if [ "$os" == "Linux" ]; then
         echo -ne "Executing ${BOLD}journalctl${NORMAL} and collecting logs"
-        journalctl -u $unit_name > $output/p2p.log 2>&1
+        sudo journalctl -u $unit_name > $output/p2p.log 2>&1
     else
         echo -ne "Executing ${BOLD}cat /var/log/p2p.log${BOLD} to collect logs"
         cat /var/log/p2p.log > $output/p2p.log 2>&1
