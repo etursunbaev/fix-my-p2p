@@ -97,10 +97,7 @@ fi
 detect_service_name()
 {
 read -r -d '' service_units << EOM
-snap.subutai.p2p-service.service
-snap.subutai-dev.p2p-service.service
-snap.subutai-master.p2p-service.service
-snap.subutai-sysnet.p2p-service.service
+subutai-p2p.service
 p2p.service
 EOM
 if [ "$os" == "Linux" ]; then
