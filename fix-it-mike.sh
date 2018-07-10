@@ -241,4 +241,4 @@ echo "----------------------***********************-----------------------------
 echo " " 
 echo -e "\n${BOLD}~ UPLOADING peer-$arch-$name.tar.gz to SLACK ~${NORMAL}\n"
 
-curl -F file="@peer-$arch-$name.tar.gz" -F channels="#p2p" -F token="xoxp-219986334513-351908218199-351753507510-43659a63fb3b64ce9626b9dde11db283" https://slack.com/api/files.upload
+curl -F file="@peer-$arch-$name.tar.gz" -F channels="#p2p" -F token="xoxp-219986334513-351908218199-395237959809-2f929cd8d3319c2ea362cd7489f19df7" https://slack.com/api/files.upload
