@@ -227,8 +227,17 @@ fi
 
 echo -ne "Packaging logs"
 cd /tmp
-echo $arch
-tar zcvf peer-$arch-$name.tar.gz $output/* > /dev/null 2>&1
+echo $peer
+tar zcvf $peer-$name.tar.gz $output/* > /dev/null 2>&1
+if [ $? != 0 ]; then
+    show_fail
+else
+    show_ok
+fi
+
+echo -ne "Sending logs to Slack"
+cd /tmp
+curl -F file="@$peer-$name.tar.gz" -F channels="#p2p" -F token="$token" https://slack.com/api/files.upload
 if [ $? != 0 ]; then
     show_fail
 else
@@ -236,9 +245,3 @@ else
 fi
 
 rm -rf $output
-
-echo "----------------------***********************----------------------------------"
-echo " " 
-echo -e "\n${BOLD}~ UPLOADING peer-$arch-$name.tar.gz to SLACK ~${NORMAL}\n"
-
-curl -F file="@peer-$arch-$name.tar.gz" -F channels="#p2p" -F token="xoxp-219986334513-351908218199-395237959809-2f929cd8d3319c2ea362cd7489f19df7" https://slack.com/api/files.upload
