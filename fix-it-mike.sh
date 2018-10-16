@@ -227,7 +227,7 @@ fi
 
 echo -ne "Packaging logs"
 cd /tmp
-echo "$peer"
+echo -e "$peer"
 tar zcvf $peer-$name.tar.gz $output/* > /dev/null 2>&1
 if [ $? != 0 ]; then
     show_fail
